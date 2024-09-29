@@ -6,8 +6,8 @@ class ExampleLayer : public Hazel::Layer
 {
 public:
 	ExampleLayer()
-		: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f),
-		  Layer("Example")
+		: m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), Layer("Example"),
+		cameraPosition({ 0.0f, 0.0f, 0.0f }), rotationPosition(0.0f)
 	{
 		m_VertexArray.reset(Hazel::VertexArray::Create());
 
@@ -122,26 +122,21 @@ public:
 	void OnUpdate() override
 	{
 
+		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT) || Hazel::Input::IsKeyPressed(HZ_KEY_A))
+			cameraPosition.x += cameraSpeed;
+		if (Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT) || Hazel::Input::IsKeyPressed(HZ_KEY_D))
+			cameraPosition.x -= cameraSpeed;
+		if (Hazel::Input::IsKeyPressed(HZ_KEY_UP) || Hazel::Input::IsKeyPressed(HZ_KEY_W))
+			cameraPosition.y -= cameraSpeed;
+		if (Hazel::Input::IsKeyPressed(HZ_KEY_DOWN) || Hazel::Input::IsKeyPressed(HZ_KEY_S))
+			cameraPosition.y += cameraSpeed;
+		if (Hazel::Input::IsKeyPressed(HZ_KEY_E))
+			rotationPosition += rotationSpeed;
+		if (Hazel::Input::IsKeyPressed(HZ_KEY_Q))
+			rotationPosition -= rotationSpeed;
+
 		Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Hazel::RenderCommand::Clear();
-
-		glm::vec3 cameraPosition = m_Camera.GetPostion();
-		float rotationPosition = m_Camera.GetRotation();
-		float cameraSpeed = 0.01f;
-		float rotationSpeed = 0.4f;
-
-		if (Hazel::Input::IsKeyPressed(GLFW_KEY_S))
-			cameraPosition.y += cameraSpeed;
-		if (Hazel::Input::IsKeyPressed(GLFW_KEY_W))
-			cameraPosition.y -= cameraSpeed;
-		if (Hazel::Input::IsKeyPressed(GLFW_KEY_D))
-			cameraPosition.x -= cameraSpeed;
-		if (Hazel::Input::IsKeyPressed(GLFW_KEY_A))
-			cameraPosition.x += cameraSpeed;
-		if (Hazel::Input::IsKeyPressed(GLFW_KEY_E))
-			rotationPosition += rotationSpeed;
-		if (Hazel::Input::IsKeyPressed(GLFW_KEY_Q))
-			rotationPosition -= rotationSpeed;
 
 		m_Camera.SetPosition(cameraPosition);
 		m_Camera.SetRotation(rotationPosition);
@@ -155,14 +150,12 @@ public:
 
 	}
 
-
 	virtual void OnImGuiRender() override
 	{
 	}
 
 	void OnEvent(Hazel::Event& event) override
 	{
-
 	}
 
 private:
@@ -174,6 +167,11 @@ private:
 
 	Hazel::OthographicCamera m_Camera;
 
+	glm::vec3 cameraPosition;
+
+	float rotationPosition;
+	float cameraSpeed = 0.01f;
+	float rotationSpeed = 0.4f;
 };
 
 class Sandbox : public Hazel::Application
