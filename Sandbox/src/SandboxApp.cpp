@@ -39,10 +39,10 @@ public:
 		m_SquareVA.reset(Hazel::VertexArray::Create());
 
 		float squareVertices[3 * 4] = {
-			-0.75f, -0.75f, 0.0f,
-			 0.75f, -0.75f, 0.0f,
-			 0.75f,  0.75f, 0.0f,
-			-0.75f,  0.75f, 0.0f
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f
 		};
 		std::shared_ptr<Hazel::VertexBuffer> squareVB;
 		squareVB.reset(Hazel::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
@@ -142,17 +142,6 @@ public:
 		else if (Hazel::Input::IsKeyPressed(HZ_KEY_Q))
 			rotationPosition -= rotationSpeed * timestep;
 
-
-		if (Hazel::Input::IsKeyPressed(HZ_KEY_J) || Hazel::Input::IsKeyPressed(HZ_KEY_A))
-			m_SquarePosition.x += squareSpeed * timestep;
-		else if (Hazel::Input::IsKeyPressed(HZ_KEY_L) || Hazel::Input::IsKeyPressed(HZ_KEY_D))
-			m_SquarePosition.x -= squareSpeed * timestep;
-		if (Hazel::Input::IsKeyPressed(HZ_KEY_I) || Hazel::Input::IsKeyPressed(HZ_KEY_W))
-			m_SquarePosition.y -= squareSpeed * timestep;
-		else if (Hazel::Input::IsKeyPressed(HZ_KEY_K) || Hazel::Input::IsKeyPressed(HZ_KEY_S))
-			m_SquarePosition.y += squareSpeed * timestep;
-	
-
 		Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Hazel::RenderCommand::Clear();
 
@@ -161,10 +150,17 @@ public:
 
 		Hazel::Renderer::BeginScene(m_Camera);
 
-		glm::mat4 tramsform = glm::translate(glm::mat4(1.0f), m_SquarePosition);
+		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-
-		Hazel::Renderer::Submit(m_BlueShader, m_SquareVA, tramsform);
+		for (int y = 0; y < 20; y++)
+		{
+			for (int x = 0; x < 20; x++)
+			{
+				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+				glm::mat4 tramsform = glm::translate(glm::mat4(1.0f), pos) * scale;
+				Hazel::Renderer::Submit(m_BlueShader, m_SquareVA, tramsform);
+			}
+		}
 		Hazel::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Hazel::Renderer::EndScene();
