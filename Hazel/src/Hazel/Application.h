@@ -3,15 +3,17 @@
 #include "Core.h"
 
 #include "Window.h"
-#include "Hazel/LayerStack.h"
-#include "Hazel/Events/Event.h"
-#include "Hazel/Events/ApplicationEvent.h"
+#include "LayerStack.h"
+#include "Events/Event.h"
+#include "Events/ApplicationEvent.h"
 
-#include "Hazel/ImGui/ImGuiLayer.h"
+#include "ImGui/ImGuiLayer.h"
 
-#include "Hazel/Renderer/Shader.h"
-#include "Hazel/Renderer/Buffer.h"
+#include "Renderer/Shader.h"
+#include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
+#include "Renderer/OthographicCamera.h"
+
 
 namespace Hazel {
 
@@ -44,6 +46,8 @@ namespace Hazel {
 
 		std::shared_ptr <Shader> m_BlueShader;
 		std::shared_ptr <VertexArray> m_SquareVA;
+
+		OthographicCamera m_Camera;
 
 	private:
 		static Application* s_Instance;
