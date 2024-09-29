@@ -7,44 +7,38 @@
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
 
+#include "Hazel/Core/Timestep.h"
+
 #include "ImGui/ImGuiLayer.h"
-
-#include "Renderer/Shader.h"
-#include "Renderer/Buffer.h"
-#include "Renderer/VertexArray.h"
-#include "Renderer/OthographicCamera.h"
-
 
 namespace Hazel {
 
-	class  Application
+	class Application
 	{
 	public:
 		Application();
 		virtual ~Application();
 
 		void Run();
-
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
 
 		inline Window& GetWindow() { return *m_Window; }
-
 		inline static Application& Get() { return *s_Instance; }
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
-		std::unique_ptr<Window> m_Window;
-		ImGuiLayer* m_ImGuiLayer;
-		bool m_Running = true;
-		LayerStack m_LayerStack;
-
-
-
 	private:
+		std::unique_ptr<Window> m_Window;
+		
+		ImGuiLayer* m_ImGuiLayer;
+		LayerStack m_LayerStack;
 		static Application* s_Instance;
+
+		bool m_Running = true;
+		float m_LastFrameTime = 0.0f;
 	};
 
 	// To be defined in CLIENT

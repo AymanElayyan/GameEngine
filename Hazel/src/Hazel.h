@@ -9,6 +9,8 @@
 #include "Hazel/Input.h"
 #include "Hazel/KeyCodes.h"
 
+#include "Hazel/Core/Timestep.h"
+
 #include "Hazel/ImGui/ImGuiLayer.h"
 
 #include "Hazel/Events/Event.h"
