@@ -6,6 +6,7 @@
 #include "Input.h"
 
 #include "Renderer/Renderer.h"
+#include <GLFW/glfw3.h>
 
 namespace Hazel {
 
@@ -171,9 +172,30 @@ namespace Hazel {
 			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 			RenderCommand::Clear();
 
+			glm::vec3 cameraPosition = m_Camera.GetPostion();
+			float rotationPosition = m_Camera.GetRotation();
+			float cameraSpeed = 0.01f;
+			float rotationSpeed = 0.4f;
+
+			if (Input::IsKeyPressed(GLFW_KEY_S)) 
+				cameraPosition.y += cameraSpeed;
+			if (Input::IsKeyPressed(GLFW_KEY_W)) 
+				cameraPosition.y -= cameraSpeed;
+			if (Input::IsKeyPressed(GLFW_KEY_D)) 
+				cameraPosition.x -= cameraSpeed;
+			if (Input::IsKeyPressed(GLFW_KEY_A)) 
+				cameraPosition.x += cameraSpeed;
+			if (Input::IsKeyPressed(GLFW_KEY_E))
+				rotationPosition += rotationSpeed;
+			if (Input::IsKeyPressed(GLFW_KEY_Q))
+				rotationPosition -= rotationSpeed;
+
+			m_Camera.SetPosition(cameraPosition);
+			m_Camera.SetRotation(rotationPosition);
+
 			Renderer::BeginScene(m_Camera);
 
-			Renderer::Submit(m_BlueShader, m_SquareVA);	
+			Renderer::Submit(m_BlueShader, m_SquareVA);
 			Renderer::Submit(m_Shader, m_VertexArray);
 
 			Renderer::EndScene();
