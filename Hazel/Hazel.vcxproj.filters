@@ -1379,6 +1379,7 @@
     <ClInclude Include="src\Hazel\Renderer\OthographicCamera.h" />
     <ClInclude Include="src\Hazel\Core\Timestep.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\Hazel\Renderer\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hazel\Application.cpp">
@@ -1433,5 +1434,6 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLRndererAPI.cpp" />
     <ClCompile Include="src\Hazel\Renderer\OthographicCamera.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\Hazel\Renderer\Texture.cpp" />
   </ItemGroup>
 </Project>

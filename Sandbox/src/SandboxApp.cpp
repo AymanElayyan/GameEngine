@@ -41,17 +41,20 @@ public:
 
 		m_SquareVA.reset(Hazel::VertexArray::Create());
 
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f
+		float squareVertices[5 * 4] = {
+		//	  x      y     z    x color y	
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
+		
 		Hazel::Ref<Hazel::VertexBuffer> squareVB;
 		squareVB.reset(Hazel::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
-			{ Hazel::ShaderDataType::Float3, "a_Position" }
-			});
+			{ Hazel::ShaderDataType::Float3, "a_Position" },
+			{ Hazel::ShaderDataType::Float2, "a_TexCoord" }
+		});
 
 		m_SquareVA->AddVertexBuffer(squareVB);
 
@@ -94,10 +97,12 @@ public:
 				color = v_Color;
 			}
 		)";
-
 		m_Shader.reset( Hazel::Shader::Create(vertexSrc, fragmentSrc));
 
-		std::string flatShaderVertexSrc = R"(
+
+
+
+		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;
@@ -127,7 +132,46 @@ public:
 				color = vec4(u_Color, 1.0f);
 			}
 		)";
-		m_FlatColorShader.reset(Hazel::Shader::Create(flatShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_FlatColorShader.reset(Hazel::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+
+
+
+
+		std::string textureShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec2 a_TexCoord;
+
+			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Transform;
+
+			out vec2 v_TexCoord;
+
+
+			void main()
+			{
+				v_TexCoord = a_TexCoord;
+				gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);	
+			}
+		)";
+
+		std::string textureShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec2 v_TexCoord;
+
+			uniform vec3 u_Color;
+
+			void main()
+			{
+				color = vec4(v_TexCoord, 0.0, 1.0);
+			}
+		)";
+		m_TextureShader.reset(Hazel::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+
 	}
 
 	void OnUpdate(Hazel::Timestep timestep) override
@@ -169,7 +213,11 @@ public:
 				Hazel::Renderer::Submit(m_FlatColorShader, m_SquareVA, tramsform);
 			}
 		}
-		Hazel::Renderer::Submit(m_Shader, m_VertexArray);
+
+		Hazel::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+		// Triangle 
+		//Hazel::Renderer::Submit(m_Shader, m_VertexArray);
 
 		Hazel::Renderer::EndScene();
 
@@ -190,7 +238,7 @@ public:
 private:
 	Hazel::Ref <Hazel::VertexArray> m_SquareVA;
 	Hazel::Ref <Hazel::VertexArray> m_VertexArray;
-	Hazel::Ref <Hazel::Shader> m_FlatColorShader;
+	Hazel::Ref <Hazel::Shader> m_FlatColorShader ,m_TextureShader;
 	Hazel::Ref <Hazel::Shader> m_Shader;
 
 	Hazel::OthographicCamera m_Camera;
