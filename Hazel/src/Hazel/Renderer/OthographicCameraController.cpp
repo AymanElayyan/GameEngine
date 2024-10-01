@@ -37,6 +37,7 @@ namespace Hazel
 		}
 
 		m_Camera.SetPosition(m_CameraPosition);
+		m_CameraTranslationSpeed = m_ZoomLevel;
 	}
 
 	void OthographicCameraController::OnEvent(Event& e)
@@ -48,7 +49,8 @@ namespace Hazel
 
 	bool OthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
-		m_ZoomLevel -= e.GetYOffset();
+		m_ZoomLevel -= e.GetYOffset() * 0.25f;
+		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
 		m_Camera.SetProjection(-m_AspecRatio * m_ZoomLevel, m_AspecRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}
