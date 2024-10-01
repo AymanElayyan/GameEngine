@@ -5,6 +5,11 @@
 
 namespace Hazel {
 
+	void OpenGLRndererAPI::Init()
+	{
+
+	}
+
 	void OpenGLRndererAPI::SetClearColor(const glm::vec4& color)
 	{
 		glClearColor(color.r, color.g, color.b, color.a);
