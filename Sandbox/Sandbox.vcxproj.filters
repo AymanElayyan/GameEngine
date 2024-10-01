@@ -4,7 +4,6 @@
     <ClCompile Include="src\SandboxApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\Texture\Checkerboard.png" />
-    <Image Include="assets\Texture\ChernoLogo.png" />
+    <None Include="assets\shaders\Texture.glsl" />
   </ItemGroup>
 </Project>

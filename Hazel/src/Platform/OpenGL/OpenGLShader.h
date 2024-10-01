@@ -3,8 +3,8 @@
 #include "Hazel/Renderer/Shader.h"
 
 #include <glm/glm.hpp>
-#include <glad/glad.h>
 
+typedef unsigned int GLenum;
 
 namespace Hazel
 {
