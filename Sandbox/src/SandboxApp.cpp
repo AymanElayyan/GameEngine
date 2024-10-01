@@ -143,7 +143,7 @@ public:
 
 	void OnUpdate(Hazel::Timestep timestep) override
 	{
-		HZ_TRACE("Delta Time {0}, ({1}ms)", timestep.GetSeconds(), timestep.GetMilliseconds());
+		//HZ_TRACE("Delta Time {0}, ({1}ms)", timestep.GetSeconds(), timestep.GetMilliseconds());
 
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT) || Hazel::Input::IsKeyPressed(HZ_KEY_A))
 			cameraPosition.x += cameraSpeed * timestep;
