@@ -66,6 +66,7 @@ namespace Hazel {
 				data.Height = height;
 
 				WindowResizeEvent event(width, height);
+				HZ_CORE_WARN("Window Size: ({0}, {1})px", width, height);
 				data.EventCallback(event);
 			});
 

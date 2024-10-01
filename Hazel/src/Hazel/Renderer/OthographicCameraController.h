@@ -32,7 +32,7 @@ namespace Hazel
 
 		glm::vec3 m_CameraPosition = {0.0f, 0.0f, 0.0f};
 		float m_CameraRotation = 0.0f;
-		float m_CameraTranslationSpeed = 6.0f, m_CameraRotationSpeed = 180.0f;
+		float m_CameraTranslationSpeed = 7.0f, m_CameraRotationSpeed = 180.0f;
 
 
 
