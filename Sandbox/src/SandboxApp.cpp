@@ -13,8 +13,7 @@ class ExampleLayer : public Hazel::Layer
 {
 public:
 	ExampleLayer()
-		: m_Camera(-2.0f, 2.0f, -1.4f, 1.4f), Layer("Example"),
-		cameraPosition(0.0f), rotationPosition(0.0f), m_SquarePosition(0.0f)
+		: m_CameraController(1288.0f / 720.0f, true), Layer("Example")
 	{
 		m_VertexArray.reset(Hazel::VertexArray::Create());
 
@@ -42,19 +41,19 @@ public:
 		m_SquareVA.reset(Hazel::VertexArray::Create());
 
 		float squareVertices[5 * 4] = {
-		//	  x      y     z    x color y	
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
+			//	  x      y     z    x color y	
+				-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+				 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+				 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+				-0.5f,  0.5f, 0.0f, 0.0f, 1.0f
 		};
-		
+
 		Hazel::Ref<Hazel::VertexBuffer> squareVB;
 		squareVB.reset(Hazel::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		squareVB->SetLayout({
 			{ Hazel::ShaderDataType::Float3, "a_Position" },
 			{ Hazel::ShaderDataType::Float2, "a_TexCoord" }
-		});
+			});
 
 		m_SquareVA->AddVertexBuffer(squareVB);
 
@@ -132,7 +131,7 @@ public:
 		m_FlatColorShader = Hazel::Shader::Create("flatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
 
 
-		auto textureShader  = m_ShaderLibray.Load("assets/shaders/Texture.glsl");
+		auto textureShader = m_ShaderLibray.Load("assets/shaders/Texture.glsl");
 		m_Texture = Hazel::Texture2D::Create("assets/Texture/Checkerboard.png");
 		m_LogoTexture = Hazel::Texture2D::Create("assets/Texture/ChernoLogo.png");
 
@@ -145,26 +144,12 @@ public:
 	{
 		//HZ_TRACE("Delta Time {0}, ({1}ms)", timestep.GetSeconds(), timestep.GetMilliseconds());
 
-		if (Hazel::Input::IsKeyPressed(HZ_KEY_LEFT) || Hazel::Input::IsKeyPressed(HZ_KEY_A))
-			cameraPosition.x += cameraSpeed * timestep;
-		else if (Hazel::Input::IsKeyPressed(HZ_KEY_RIGHT) || Hazel::Input::IsKeyPressed(HZ_KEY_D))
-			cameraPosition.x -= cameraSpeed * timestep;
-		if (Hazel::Input::IsKeyPressed(HZ_KEY_UP) || Hazel::Input::IsKeyPressed(HZ_KEY_W))
-			cameraPosition.y -= cameraSpeed * timestep;
-		else if (Hazel::Input::IsKeyPressed(HZ_KEY_DOWN) || Hazel::Input::IsKeyPressed(HZ_KEY_S))
-			cameraPosition.y += cameraSpeed * timestep;
-		if (Hazel::Input::IsKeyPressed(HZ_KEY_E))
-			rotationPosition += rotationSpeed * timestep;
-		else if (Hazel::Input::IsKeyPressed(HZ_KEY_Q))
-			rotationPosition -= rotationSpeed * timestep;
+		m_CameraController.OnUpdate(timestep);
 
 		Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Hazel::RenderCommand::Clear();
 
-		m_Camera.SetPosition(cameraPosition);
-		m_Camera.SetRotation(rotationPosition);
-
-		Hazel::Renderer::BeginScene(m_Camera);
+		Hazel::Renderer::BeginScene(m_CameraController.GetCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -195,6 +180,7 @@ public:
 
 	}
 
+
 	virtual void OnImGuiRender() override
 	{
 		ImGui::Begin("Setting");
@@ -205,6 +191,7 @@ public:
 
 	void OnEvent(Hazel::Event& event) override
 	{
+		m_CameraController.OnEvent(event);
 	}
 
 private:
@@ -215,17 +202,13 @@ private:
 	Hazel::Ref <Hazel::Shader> m_FlatColorShader;
 	Hazel::Ref <Hazel::Shader> m_Shader;
 	Hazel::Ref <Hazel::Texture2D> m_Texture, m_LogoTexture;
-	
-	Hazel::OthographicCamera m_Camera;
+
+	Hazel::OthographicCameraController m_CameraController;
 
 	glm::vec3 cameraPosition;
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 	glm::vec3 m_SquarePosition;
 
-	float rotationPosition;
-	float cameraSpeed = 3.0f;
-	float rotationSpeed = 50.0f;
-	float squareSpeed = 1.0f;
 
 };
 
