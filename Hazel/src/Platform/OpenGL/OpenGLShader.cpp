@@ -199,8 +199,7 @@ namespace Hazel {
 			for (auto id : glShaderIDs)
 				glDetachShader(program, id);
 
-			m_RendererID = program;
-
 		}
+			m_RendererID = program;
 	}
 }
