@@ -3,6 +3,7 @@
 #include "Hazel/Renderer/Shader.h"
 
 #include <glm/glm.hpp>
+#include <glad/glad.h>
 
 
 namespace Hazel
@@ -30,7 +31,8 @@ namespace Hazel
 
 	private:
 		std::string ReadFile(const std::string& filepath);
-		void Compile();
+		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
+		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 	private:
 		uint32_t m_RendererID;
 
