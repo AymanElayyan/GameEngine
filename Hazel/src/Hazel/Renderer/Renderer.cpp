@@ -6,10 +6,9 @@ namespace Hazel
 {
 	Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
 
-
 	void Renderer::Init()
 	{
-		RenderCommand::
+		RenderCommand::Init();
 	}
 
 	void Renderer::BeginScene(OthographicCamera& camera)

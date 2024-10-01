@@ -11,6 +11,7 @@ namespace Hazel
 	public:
 
 		static void Init();
+
 		static void BeginScene(OthographicCamera& camera);
 		static void EndScene();
 
