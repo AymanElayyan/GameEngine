@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Texture\Checkerboard.png" />
+    <Image Include="assets\Texture\ChernoLogo.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
