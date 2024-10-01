@@ -23,6 +23,7 @@
 #include "Hazel/Renderer/Texture.h"
 #include "Hazel/Renderer/VertexArray.h"
 #include "Hazel/Renderer/OthographicCamera.h"
+#include "Hazel/Renderer/OthographicCameraControl.h"
 
 
 // -----Entry Point--------------
