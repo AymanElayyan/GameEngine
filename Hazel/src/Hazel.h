@@ -24,8 +24,4 @@
 #include "Hazel/Renderer/VertexArray.h"
 #include "Hazel/Renderer/OthographicCamera.h"
 #include "Hazel/Renderer/OthographicCameraController.h"
-
-
-// -----Entry Point--------------
-//#include "Hazel/Core/EntryPoint.h"
-// ------------------------------
+#include "Hazel/Renderer/Renderer2D.h"
