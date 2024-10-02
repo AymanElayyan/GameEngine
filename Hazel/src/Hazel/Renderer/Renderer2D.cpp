@@ -55,6 +55,7 @@ namespace Hazel
 	{
 		std::dynamic_pointer_cast<OpenGLShader> (s_Data->FlatColorShader)->Bind();
 		std::dynamic_pointer_cast<OpenGLShader> (s_Data->FlatColorShader)->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		std::dynamic_pointer_cast<OpenGLShader> (s_Data->FlatColorShader)->UploadUniformMat4("u_Transform", glm::mat4(1.0f));
 	}
 
 	void Renderer2D::EndScene()
