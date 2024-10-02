@@ -192,14 +192,6 @@ public:
 	void OnEvent(Hazel::Event& event) override
 	{
 		m_CameraController.OnEvent(event);
-
-		if (event.GetEventType() == Hazel::EventType::WindowResize)
-		{
-			auto& resizeEvent = (Hazel::WindowResizeEvent&)event;
-			resizeEvent.GetWidth();
-			resizeEvent.GetHeight();
-
-		}
 	}
 
 private:
