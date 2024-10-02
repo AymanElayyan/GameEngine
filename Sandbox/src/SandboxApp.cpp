@@ -3,11 +3,11 @@
 
 #include <Hazel/Core/EntryPoint.h>
 
-
 #include <GLFW/include/GLFW/glfw3.h>
 #include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Sandbox2D.h"
 
 class ExampleLayer : public Hazel::Layer
 {
@@ -15,7 +15,7 @@ public:
 	ExampleLayer()
 		: m_CameraController(1288.0f / 720.0f, true), Layer("Example")
 	{
-		m_VertexArray.reset(Hazel::VertexArray::Create());
+		m_VertexArray = Hazel::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			//    x      y     z             Color
@@ -38,7 +38,7 @@ public:
 		indexBuffer.reset(Hazel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_SquareVA.reset(Hazel::VertexArray::Create());
+		m_SquareVA = Hazel::VertexArray::Create();
 
 		float squareVertices[5 * 4] = {
 			//	  x      y     z    x color y	
@@ -217,7 +217,8 @@ class Sandbox : public Hazel::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()
