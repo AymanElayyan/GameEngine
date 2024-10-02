@@ -1,6 +1,10 @@
 workspace "Hazel"
 	architecture "x64"
 	startproject "Sandbox"
+	toolset "v143"
+	systemversion "latest"
+	language "C++"
+	cppdialect "C++17"
 
 	configurations
 	{
@@ -26,8 +30,6 @@ include "Hazel/vendor/imgui"
 project "Hazel"
 	location "Hazel"
 	kind "StaticLib"
-	language "C++"
-	cppdialect "C++17"
 	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -70,7 +72,7 @@ project "Hazel"
 	}
 
 	filter "system:windows"
-		systemversion "latest"
+		
 
 		defines
 		{
@@ -97,8 +99,6 @@ project "Hazel"
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
 	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -124,7 +124,7 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		systemversion "latest"
+		
 
 		defines
 		{
