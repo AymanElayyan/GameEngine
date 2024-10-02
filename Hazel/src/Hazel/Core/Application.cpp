@@ -3,10 +3,10 @@
 #include "Application.h"
 #include "Input.h"
 
-#include "Hazel/Log.h"
-#include "Hazel/Core.h"
+#include "Hazel/Core/Log.h"
+#include "Hazel/Core/Core.h"
 
-#include "Renderer/Renderer.h"
+#include "Hazel/Renderer/Renderer.h"
 
 #include <GLFW/glfw3.h>
 

@@ -7,7 +7,7 @@
 
 #include "Platform/OpenGL/OpenGLContext.h"
 
-#include <Hazel/Log.h>
+#include <Hazel/Core/Log.h>
 
 namespace Hazel {
 

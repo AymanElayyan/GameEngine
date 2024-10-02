@@ -2,7 +2,7 @@
 #include "Buffer.h"
 
 #include "Renderer.h"
-#include <Hazel/Log.h>
+#include <Hazel/Core/Log.h>
 
 #include "Platform/OpenGL/OpenGLBuffer.h"
 

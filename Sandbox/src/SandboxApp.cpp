@@ -1,7 +1,7 @@
 #include <Hazel.h>
 #include <Platform/OpenGL/OpenGLShader.h>
 
-#include <Hazel/EntryPoint.h>
+#include <Hazel/Core/EntryPoint.h>
 
 
 #include <GLFW/include/GLFW/glfw3.h>
