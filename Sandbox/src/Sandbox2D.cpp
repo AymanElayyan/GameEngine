@@ -46,7 +46,7 @@ private:
 	Fn m_Func;
 };
 
-
+#define PROFILE_SCOPE(name) Timer timer##__LINE__(name, [&](auto profailResult) {m_ProfialResult.push_back(profailResult); }))
 
 
 
