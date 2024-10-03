@@ -8,11 +8,12 @@
 
 #include <chrono>
 
+template <typename Fn>
 class Timer
 {
 public:
-	Timer(const char* name)
-		: m_Name(name), m_Stopped(false)
+	Timer(const char* name, Fn&& function)
+		: m_Name(name), m_Stopped(false), m_Func(function)
 	{
 		m_StartTimepoint = std::chrono::high_resolution_clock::now();
 	}
@@ -32,7 +33,9 @@ public:
 
 		m_Stopped = true;
 
-		std::cout << "Duration: " << (end - start) << "ms" << std::endl;
+		float duration = (end - start) * 0.001f;
+		m_Func({m_Name, duration});
+
 	}
 
 
@@ -40,6 +43,7 @@ private:
 	const char* m_Name;
 	std::chrono::time_point<std::chrono::steady_clock> m_StartTimepoint;
 	bool m_Stopped;
+	Fn m_Func;
 };
 
 
@@ -63,8 +67,12 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 {
-	Timer timer("Sandbox::OnUpdate");
-	m_CameraController.OnUpdate(ts);
+	Timer timer("Sandbox::OnUpdate", [&](auto profailResult) {m_ProfialResult.push_back(profailResult); });
+	
+	{
+		Timer timer("CameraController::OnUpdate");
+		m_CameraController.OnUpdate(ts);
+	}
 
 	Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	Hazel::RenderCommand::Clear();
@@ -81,6 +89,16 @@ void Sandbox2D::OnImGuiRender()
 {
 	ImGui::Begin("Setting");
 	ImGui::ColorEdit4("Sequre Color", glm::value_ptr(m_SquareColor));
+
+	for (auto& result : m_ProfialResult)
+	{
+		char label[50];
+		strcpy(label, result.Name);
+		strcpy(label, "  %.2ms");
+		ImGui::Text(label, result.Time);
+	}
+	m_ProfialResult.clear();
+
 	ImGui::End();
 }
 
