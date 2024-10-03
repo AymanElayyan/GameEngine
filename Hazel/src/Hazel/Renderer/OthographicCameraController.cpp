@@ -17,14 +17,14 @@ namespace Hazel
 	void OthographicCameraController::OnUpdate(Timestep timestep)
 	{
 		if (Input::IsKeyPressed(HZ_KEY_LEFT) || Input::IsKeyPressed(HZ_KEY_A))
-			m_CameraPosition.x += m_CameraTranslationSpeed * timestep;
-		else if (Input::IsKeyPressed(HZ_KEY_RIGHT) || Input::IsKeyPressed(HZ_KEY_D))
 			m_CameraPosition.x -= m_CameraTranslationSpeed * timestep;
+		else if (Input::IsKeyPressed(HZ_KEY_RIGHT) || Input::IsKeyPressed(HZ_KEY_D))
+			m_CameraPosition.x += m_CameraTranslationSpeed * timestep;
 
 		if (Input::IsKeyPressed(HZ_KEY_UP) || Input::IsKeyPressed(HZ_KEY_W))
-			m_CameraPosition.y -= m_CameraTranslationSpeed * timestep;
-		else if (Input::IsKeyPressed(HZ_KEY_DOWN) || Input::IsKeyPressed(HZ_KEY_S))
 			m_CameraPosition.y += m_CameraTranslationSpeed * timestep;
+		else if (Input::IsKeyPressed(HZ_KEY_DOWN) || Input::IsKeyPressed(HZ_KEY_S))
+			m_CameraPosition.y -= m_CameraTranslationSpeed * timestep;
 
 		if (m_Rotation)
 		{
