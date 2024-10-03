@@ -2,6 +2,8 @@
 #include "Texture.h"
 
 #include "Platform/OpenGL/OpenGLTexture.h"
+#include "Hazel/Renderer/Renderer.h"
+
 namespace Hazel
 {
 	Ref<Texture2D> Texture2D::Create(const std::string& path)
