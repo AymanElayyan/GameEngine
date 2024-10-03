@@ -46,7 +46,7 @@ private:
 	Fn m_Func;
 };
 
-#define PROFILE_SCOPE(name) Timer timer##__LINE__(name, [&](auto profailResult) {m_ProfialResult.push_back(profailResult); }))
+#define PROFILE_SCOPE(name) Timer timer##__LINE__(name, [&](ProfilResults profilResult) {m_ProfilResult.push_back(profilResult); })
 
 
 
@@ -67,22 +67,27 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 {
-	Timer timer("Sandbox::OnUpdate", [&](auto profailResult) {m_ProfialResult.push_back(profailResult); });
+	PROFILE_SCOPE("Sandbox::OnUpdate");
 	
 	{
-		Timer timer("CameraController::OnUpdate");
+		PROFILE_SCOPE("CameraController::OnUpdate");
 		m_CameraController.OnUpdate(ts);
 	}
 
-	Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-	Hazel::RenderCommand::Clear();
-
-	Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	Hazel::Renderer2D::DrawQuad({-1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.3f, 0.5f, 0.7f, 1.0f });
-	Hazel::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.8f }, { 0.4f, 0.1f, 0.5f, 1.0f });
-	Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.2f}, { 10.5f, 10.5f }, m_CheckerboardTexture);
-	Hazel::Renderer2D::EndScene();
+	{
+		PROFILE_SCOPE("Renderer Prep");
+		Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+		Hazel::RenderCommand::Clear();
+	}
 	
+	{
+		PROFILE_SCOPE("Renderer Draw");
+		Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		Hazel::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.3f, 0.5f, 0.7f, 1.0f });
+		Hazel::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.8f }, { 0.4f, 0.1f, 0.5f, 1.0f });
+		Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.2f }, { 10.5f, 10.5f }, m_CheckerboardTexture);
+		Hazel::Renderer2D::EndScene();
+	}
 }
 
 void Sandbox2D::OnImGuiRender()
@@ -90,14 +95,14 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Begin("Setting");
 	ImGui::ColorEdit4("Sequre Color", glm::value_ptr(m_SquareColor));
 
-	for (auto& result : m_ProfialResult)
+	for (auto& result : m_ProfilResult)
 	{
 		char label[50];
 		strcpy(label, result.Name);
 		strcpy(label, "  %.2ms");
 		ImGui::Text(label, result.Time);
 	}
-	m_ProfialResult.clear();
+	m_ProfilResult.clear();
 
 	ImGui::End();
 }
