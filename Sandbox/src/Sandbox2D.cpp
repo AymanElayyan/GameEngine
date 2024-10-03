@@ -98,8 +98,8 @@ void Sandbox2D::OnImGuiRender()
 	for (auto& result : m_ProfilResult)
 	{
 		char label[50];
-		strcpy(label, result.Name);
-		strcpy(label, "  %.2ms");
+		strcpy(label, "%.3fms  ");
+		strcat(label, result.Name);
 		ImGui::Text(label, result.Time);
 	}
 	m_ProfilResult.clear();
