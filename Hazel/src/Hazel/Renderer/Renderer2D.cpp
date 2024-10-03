@@ -88,7 +88,7 @@ namespace Hazel
 		RenderCommand::DrowIndexed(s_Data->QuadVertexArray);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	/*void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, texture);
 	}
@@ -103,5 +103,5 @@ namespace Hazel
 
 		s_Data->QuadVertexArray->Bind();
 		RenderCommand::DrowIndexed(s_Data->QuadVertexArray);
-	}
+	}*/
 }
