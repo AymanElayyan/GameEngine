@@ -76,11 +76,10 @@ namespace Hazel {
 		UploadUniformInt(name, value);
 	}
 
-
 	void OpenGLShader::SetIntArray(const std::string& name, int* value, uint32_t count)
 	{
-		UploadUniformIntArray(name, value);
-
+		UploadUniformIntArray(name, value, count);
+		
 	}
 
 
