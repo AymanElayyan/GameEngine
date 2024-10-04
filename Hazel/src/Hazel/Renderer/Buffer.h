@@ -148,7 +148,7 @@ namespace Hazel
 		
 		virtual uint32_t GetCount() const = 0;
 
-		static Ref<IndexBuffer> Create(uint32_t* indeces, uint32_t size);
+		static Ref<IndexBuffer> Create(uint32_t* indeces, uint32_t count);
 	};
 
 }

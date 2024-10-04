@@ -44,13 +44,15 @@ namespace Hazel
 
 		s_Data.QuadVertexArray->AddVertexBuffer(quadVB);
 
-		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+		uint32_t* quadIndices = new uint32_t[s_Data.maxIndices];
 
-		Ref<IndexBuffer> squareIB = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
-		s_Data.QuadVertexArray->SetIndexBuffer(squareIB);
+		Ref<IndexBuffer> quadIB = IndexBuffer::Create(quadIndices, s_Data.maxIndices);
+		s_Data.QuadVertexArray->SetIndexBuffer(quadIB);
+
+		delete[] quadIndices;
 
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
-		
+
 		uint32_t whiteTextureData = 0xffffffff;
 		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
@@ -100,7 +102,7 @@ namespace Hazel
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)
-	{ 
+	{
 
 		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tilingFactor, tintColor);
 	}
@@ -156,7 +158,7 @@ namespace Hazel
 		s_Data.TextureShader->SetFloat("u_TilingFactor", 1.0f);
 		texture->Bind();
 
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * 
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
 			glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f }) *
 			glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
