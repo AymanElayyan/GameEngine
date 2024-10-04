@@ -4,17 +4,21 @@
 #include <algorithm>
 #include <fstream>
 #include <thread>
+
 namespace Hazel {
+
 	struct ProfileResult
 	{
 		std::string Name;
 		long long Start, End;
 		uint32_t ThreadID;
 	};
+
 	struct InstrumentationSession
 	{
 		std::string Name;
 	};
+
 	class Instrumentor
 	{
 	private:
