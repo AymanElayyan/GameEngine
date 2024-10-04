@@ -86,7 +86,7 @@ namespace Hazel
 
 		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
 		s_Data.TextureShader->Bind();
-		s_Data.TextureShader->SetInt("u_Texture", 0);
+		s_Data.TextureShader->SetInt("u_Textures", 0);
 
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
 

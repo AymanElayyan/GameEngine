@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Hazel/Core/Core.h"
+#include "Texture.h"
 
 namespace Hazel
 {
@@ -15,7 +16,7 @@ namespace Hazel
 		virtual void SetData(void* data, uint32_t size) = 0;
 		virtual void Bind(uint32_t slot = 0) const = 0;
 
-		virtual bool operator==(const Texture2D& other) const = 0;
+		virtual bool operator==(const Texture& other) const = 0;
 
 	};
 
