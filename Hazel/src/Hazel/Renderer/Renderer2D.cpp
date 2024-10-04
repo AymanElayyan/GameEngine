@@ -98,7 +98,7 @@ namespace Hazel
 
 	void Renderer2D::Flush()
 	{
-
+		RenderCommand::DrowIndexed();
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
