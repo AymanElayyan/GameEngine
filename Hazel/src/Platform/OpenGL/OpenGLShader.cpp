@@ -76,6 +76,13 @@ namespace Hazel {
 		UploadUniformInt(name, value);
 	}
 
+	void SetIntArray(const std::string& name, int* value, uint32_t count)
+	{
+		UploadUniformIntArray(name, value);
+
+	}
+
+
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
 		HZ_PROFILE_FUNCTION();
