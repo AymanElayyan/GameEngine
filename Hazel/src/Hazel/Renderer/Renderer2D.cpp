@@ -22,6 +22,7 @@ namespace Hazel
 		const uint32_t maxQuads = 10000;
 		const uint32_t maxVertices = maxQuads * 4;
 		const uint32_t maxIndices = maxQuads * 6;
+		const uint32_t MaxTextureSlots = 32;
 
 		Ref<VertexArray> QuadVertexArray;
 		Ref<VertexBuffer> QuadVertexBuffer;
