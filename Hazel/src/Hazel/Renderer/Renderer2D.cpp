@@ -46,14 +46,28 @@ namespace Hazel
 
 		s_Data.QuadVertexBuffer->SetLayout({
 			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float2, "a_TexCoord" },
-			{ ShaderDataType::Float4, "a_Color" }
+			{ ShaderDataType::Float4, "a_Color" },
+			{ ShaderDataType::Float2, "a_TexCoord" }
 			});
 
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
 		s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.maxVertices];
 		uint32_t* quadIndices = new uint32_t[s_Data.maxIndices];
+
+		uint32_t offset = 0;
+		for (uint32_t i = 0; i < s_Data.maxIndices; i += 6)
+		{
+			quadIndices[i + 0] = offset + 0;
+			quadIndices[i + 1] = offset + 1;
+			quadIndices[i + 2] = offset + 2;
+
+			quadIndices[i + 3] = offset + 2;
+			quadIndices[i + 4] = offset + 3;
+			quadIndices[i + 5] = offset + 0;
+
+			offset += 4;
+		}
 
 		Ref<IndexBuffer> quadIB = IndexBuffer::Create(quadIndices, s_Data.maxIndices);
 		s_Data.QuadVertexArray->SetIndexBuffer(quadIB);
