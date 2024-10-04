@@ -85,16 +85,19 @@ project "Hazel"
 		defines "HZ_DEBUG"
 		runtime "Debug"
 		symbols "on"
+		buildoptions { "/MTd" }
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
 		runtime "Release"
 		optimize "on"
+		buildoptions { "/MT" }
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
 		runtime "Release"
 		optimize "on"
+		buildoptions { "/MT" }
 
 project "Sandbox"
 	location "Sandbox"
@@ -135,13 +138,16 @@ project "Sandbox"
 		defines "HZ_DEBUG"
 		runtime "Debug"
 		symbols "on"
+		buildoptions { "/MTd" }
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
 		runtime "Release"
 		optimize "on"
+		buildoptions { "/MT" }
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
 		runtime "Release"
 		optimize "on"
+		buildoptions { "/MT" }
