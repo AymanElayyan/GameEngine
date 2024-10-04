@@ -18,6 +18,8 @@ namespace Hazel
 		Ref<VertexArray> QuadVertexArray;
 		Ref<Shader> TextureShader;
 		Ref<Texture> WhiteTexture;
+
+		uint32_t qaudIndexCount = 0;
 	};
 
 	static Renderer2DStorge s_Data;
@@ -26,6 +28,7 @@ namespace Hazel
 	{
 		glm::vec3 Position;
 		glm::vec2 TexCoord;
+		glm::vec4 Color;
 
 	};
 
@@ -39,7 +42,8 @@ namespace Hazel
 
 		quadVB->SetLayout({
 			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float2, "a_TexCoord" }
+			{ ShaderDataType::Float2, "a_TexCoord" },
+			{ ShaderDataType::Float4, "a_Color" }
 			});
 
 		s_Data.QuadVertexArray->AddVertexBuffer(quadVB);
