@@ -17,6 +17,9 @@ namespace Hazel
 
 		virtual void Bind(uint32_t slot) const override;
 		virtual void SetData(void* data, uint32_t size) override;
+
+		virtual bool operator==(const Texture2D& other) const override { return m_RendererID == ((OpenGLTexture2D&)other).m_RendererID; }
+
 	
 	private:
 		uint32_t m_Width;
