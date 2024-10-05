@@ -1,7 +1,6 @@
 #include "hzpch.h"
 #include "OpenGLShader.h"
 
-
 #include <Hazel/Core/Log.h>
 
 #include <fstream>
@@ -80,7 +79,6 @@ namespace Hazel {
 	{
 		UploadUniformIntArray(name, value, count);		
 	}
-
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
