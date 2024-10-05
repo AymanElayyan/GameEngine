@@ -22,6 +22,9 @@ private:
 	static std::uniform_int_distribution<std::mt19937::result_type> s_Distribution;
 };
 
+std::mt19937 Random::s_RandomEngine;
+std::uniform_int_distribution<std::mt19937::result_type> Random::s_Distribution;
+
 ParticleSystem::ParticleSystem()
 {
 	m_ParticlePool.resize(1000);
@@ -86,5 +89,16 @@ void ParticleSystem::OnRender()
 
 		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
 		Hazel::Renderer2D::DrawQuad(particle.Position, { size, size }, particle.Rotation, color);
+
+		Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		Hazel::Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 0.1f });
+		Hazel::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+		Hazel::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+		Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f, { 0.0f, 0.0f, 0.0f, 0.0f });
+		Hazel::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
+		//Hazel::Renderer2D::EndScene();
+
+	
+	
 	}
 }
