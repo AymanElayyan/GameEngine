@@ -320,7 +320,7 @@ namespace Hazel
 
 		s_Data.QuadIndexCount += 6;
 		s_Data.Stats.QuadCount++;
-
+		
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tintColor)

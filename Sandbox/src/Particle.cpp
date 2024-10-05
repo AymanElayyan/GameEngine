@@ -76,8 +76,9 @@ void ParticleSystem::OnUpdate(Hazel::Timestep ts)
 	}
 }
 
-void ParticleSystem::OnRender()
+void ParticleSystem::OnRender(Hazel::OthographicCamera& camera)
 {
+	Hazel::Renderer2D::BeginScene(camera);
 	for (auto& particle : m_ParticlePool)
 	{
 		if (!particle.Active)
@@ -88,17 +89,8 @@ void ParticleSystem::OnRender()
 		color.a = color.a * life;
 
 		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
-		Hazel::Renderer2D::DrawQuad(particle.Position, { size, size }, particle.Rotation, color);
+		Hazel::Renderer2D::DrawRotatedQuad(particle.Position, { size, size }, particle.Rotation, color);
 
-		Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
-		Hazel::Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 0.1f });
-		Hazel::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-		Hazel::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-		Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 20.0f, 20.0f }, m_CheckerboardTexture, 10.0f, { 0.0f, 0.0f, 0.0f, 0.0f });
-		Hazel::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
-		//Hazel::Renderer2D::EndScene();
 
-	
-	
 	}
 }

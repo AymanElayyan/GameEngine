@@ -3,6 +3,9 @@
 #include <Hazel.h>
 #include "Hazel/Core/Layer.h"
 
+#include "Particle.h"
+
+
 class Sandbox2D : public Hazel::Layer
 {
 public:
@@ -25,4 +28,6 @@ private:
 
 	glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
 
+	ParticleSystem m_ParticleSystem;
+	ParticleProps m_Particle;
 };

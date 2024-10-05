@@ -19,7 +19,7 @@ public:
 	void Emit(const ParticleProps& particleProps);
 
 	void OnUpdate(Hazel::Timestep ts);
-	void OnRender();
+	void OnRender(Hazel::OthographicCamera& camera);
 private:
 	struct Particle
 	{
