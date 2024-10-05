@@ -2,20 +2,16 @@
 #include "OthographicCameraController.h"
 
 #include "Hazel/Core/Core.h"
-
 #include "Hazel/Core/Input.h"
 #include "Hazel/Core/KeyCodes.h"
 
 namespace Hazel
 {
-	OthographicCameraController::OthographicCameraController(float aspecRatio, bool rotation)
-		:m_AspecRatio(aspecRatio), m_Rotation(rotation),
-		m_Bounds({ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel }), 
-		m_Camera(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top)
+	OthographicCameraController::OthographicCameraController(float aspectRatio, bool rotation)
+		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
 	{
 	}
 
-	
 	void OthographicCameraController::OnUpdate(Timestep timestep)
 	{
 		HZ_PROFILE_FUNCTION();
@@ -36,7 +32,7 @@ namespace Hazel
 				m_CameraRotation += m_CameraRotationSpeed * timestep;
 			else if (Input::IsKeyPressed(HZ_KEY_Q))
 				m_CameraRotation -= m_CameraRotationSpeed * timestep;
-			
+
 			m_Camera.SetRotation(m_CameraRotation);
 		}
 
@@ -58,11 +54,8 @@ namespace Hazel
 		HZ_PROFILE_FUNCTION();
 
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
-		m_ZoomLevel = (m_ZoomLevel) > (0.25f) ? (m_ZoomLevel) : (0.25f);
-
-		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
-		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
-
+		m_ZoomLevel = (m_ZoomLevel > 0.25f) ? m_ZoomLevel : 0.25f;
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}
 
@@ -70,11 +63,8 @@ namespace Hazel
 	{
 		HZ_PROFILE_FUNCTION();
 
-		m_AspecRatio = (float)e.GetWidth() / (float)e.GetHeight();
-
-		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
-		m_Camera.SetProjection(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
-
+		m_AspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
+		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 		return false;
 	}
 }
