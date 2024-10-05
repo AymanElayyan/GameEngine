@@ -51,6 +51,13 @@ void Sandbox2D::OnImGuiRender()
 {
 	HZ_PROFILE_FUNCTION();
 	ImGui::Begin("Settings");
+	ImGui::Text("Renderer2D Stats:");
+	auto stats = Hazel::Renderer2D::GetStats();
+	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+	ImGui::Text("Quad Count: %d", stats.QuadCount);
+	ImGui::Text("Vertices  : %d", stats.GetTotalVertexCount());
+	ImGui::Text("Indices   : %d", stats.GetTotalIndexCount());
+
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));  // Allow color change
 	ImGui::End();
 }
