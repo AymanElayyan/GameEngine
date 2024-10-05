@@ -97,6 +97,7 @@ namespace Hazel
 	void Renderer2D::Shutdown()
 	{
 		HZ_PROFILE_FUNCTION();
+		delete[] s_Data.QuadVertexBufferBase; // Free allocated memory
 	}
 
 	void Renderer2D::BeginScene(const OthographicCamera& camera)
@@ -107,8 +108,8 @@ namespace Hazel
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
 		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-		s_Data.TextureSlotIndex = 1;
+		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase; // Reset pointer
+		s_Data.TextureSlotIndex = 1; // Reset texture index
 	}
 
 	void Renderer2D::EndScene()
@@ -140,6 +141,12 @@ namespace Hazel
 
 		const float texIndex = 0.0f; // White Texture
 		const float tilingFactor = 1.0f;
+
+		if (s_Data.QuadIndexCount >= s_Data.MaxQuads * 6)
+		{
+			Flush(); // Flush before adding more quads
+		}
+
 		s_Data.QuadVertexBufferPtr->Position = position;
 		s_Data.QuadVertexBufferPtr->Color = color;
 		s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 0.0f };
@@ -190,20 +197,48 @@ namespace Hazel
 
 		constexpr glm::vec4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		float textureIndex = 0.0f;
-		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
+
+		//for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
+		//{
+		//	if (*s_Data.TextureSlots[i].get() == *texture.get())
+		//	{
+		//		textureIndex = (float)i;
+		//		break;
+		//	}
+		//}
+		//if (textureIndex == 0.0f)
+		//{
+		//	textureIndex = (float)s_Data.TextureSlotIndex;
+		//	s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+		//	s_Data.TextureSlotIndex++;
+		//	HZ_CORE_TRACE("Texture added to slot {0}, total slots used: {1}", textureIndex, s_Data.TextureSlotIndex);
+		//}
+
+		bool textureFound = false;
+		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)  // Start from 1 since 0 is the white texture
 		{
 			if (*s_Data.TextureSlots[i].get() == *texture.get())
 			{
-				textureIndex = (float)i;
+				textureFound = true;
+				textureIndex = (float)i; // Assign the existing texture index
 				break;
 			}
 		}
-		if (textureIndex == 0.0f)
+
+		// If texture is not found, add it to the slot array
+		if (!textureFound)
 		{
 			textureIndex = (float)s_Data.TextureSlotIndex;
 			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
 			s_Data.TextureSlotIndex++;
 		}
+
+
+		if (s_Data.QuadIndexCount >= s_Data.MaxQuads * 6)
+		{
+			Flush(); // Flush before adding more quads
+		}
+
 		s_Data.QuadVertexBufferPtr->Position = position;
 		s_Data.QuadVertexBufferPtr->Color = color;
 		s_Data.QuadVertexBufferPtr->TexCoord = { 0.0f, 0.0f };

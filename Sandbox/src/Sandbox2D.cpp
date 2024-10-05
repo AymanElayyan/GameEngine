@@ -51,6 +51,7 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::End();
 }
 
+
 void Sandbox2D::OnEvent(Hazel::Event& e)
 {
 	HZ_PROFILE_FUNCTION();
