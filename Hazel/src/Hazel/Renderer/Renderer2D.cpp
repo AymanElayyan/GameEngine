@@ -209,7 +209,7 @@ namespace Hazel
 			textureIndex = (float)s_Data.TextureSlotIndex;
 			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
 			s_Data.TextureSlotIndex++;
-			HZ_CORE_TRACE("Texture added to slot {0}, total slots used: {1}", textureIndex, s_Data.TextureSlotIndex);
+			//HZ_CORE_TRACE("Texture added to slot {0}, total slots used: {1}", textureIndex, s_Data.TextureSlotIndex);
 		}
 
 
