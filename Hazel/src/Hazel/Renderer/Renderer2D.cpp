@@ -39,6 +39,11 @@ namespace Hazel
 		uint32_t TextureSlotIndex = 1; // 0 = WhiteTexture
 
 		glm::vec4 QuadVertexPositions[4];
+
+		struct Statisics
+		{
+
+		};
 	};
 
 	static Renderer2DStorge s_Data;
