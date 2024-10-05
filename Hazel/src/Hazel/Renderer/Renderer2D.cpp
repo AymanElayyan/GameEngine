@@ -20,7 +20,7 @@ namespace Hazel
 
 	struct Renderer2DStorge
 	{
-		static const uint32_t MaxQuads = 3;
+		static const uint32_t MaxQuads = 20000;
 		static const uint32_t MaxVertices = MaxQuads * 4;
 		static const uint32_t MaxIndices = MaxQuads * 6;
 		static const uint32_t MaxTextureSlots = 32;
@@ -352,7 +352,7 @@ namespace Hazel
 			textureIndex = (float)s_Data.TextureSlotIndex;
 			s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
 			s_Data.TextureSlotIndex++;
-			HZ_CORE_TRACE("Texture added to slot {0}, total slots used: {1}", textureIndex, s_Data.TextureSlotIndex);
+			//HZ_CORE_TRACE("Texture added to slot {0}, total slots used: {1}", textureIndex, s_Data.TextureSlotIndex);
 		}
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)

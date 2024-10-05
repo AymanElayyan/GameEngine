@@ -44,12 +44,26 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 	Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
 	Hazel::Renderer2D::DrawRotatedQuad({ -2.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_CheckerboardTexture, 20.0f);
 	Hazel::Renderer2D::EndScene();
+
+	Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	for (float y = -5.0f; y < 5.0f; y += 0.5f)
+	{
+		for (float x = -5.0f; x < 5.0f; x += 0.5f)
+		{
+			glm::vec4 color = { (x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 1.0f };
+			Hazel::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
+		}
+	}
+
+	Hazel::Renderer2D::EndScene();
+
 }
 
 
 void Sandbox2D::OnImGuiRender()
 {
 	HZ_PROFILE_FUNCTION();
+
 	ImGui::Begin("Settings");
 	ImGui::Text("Renderer2D Stats:");
 	auto stats = Hazel::Renderer2D::GetStats();
