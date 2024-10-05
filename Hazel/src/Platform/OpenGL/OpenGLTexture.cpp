@@ -57,6 +57,8 @@ namespace Hazel
 			dataFormat = GL_RGB;
 		}
 
+		HZ_CORE_ASSERT(channels == 3 || channels == 4, "Unsupported number of channels: must be 3 (RGB) or 4 (RGBA)");
+
 		m_internalFormat = internalFormat;
 		m_DataFormat = dataFormat;
 

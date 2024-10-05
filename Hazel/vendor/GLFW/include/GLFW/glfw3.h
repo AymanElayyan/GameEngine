@@ -337,7 +337,8 @@ extern "C" {
  *  @ingroup input
  */
 #define GLFW_PRESS                  1
-/*! @brief The key was held down until it repeated.
+/*! @brief The key was held down until it 
+ed.
  *
  *  The key was held down until it repeated.
  *
