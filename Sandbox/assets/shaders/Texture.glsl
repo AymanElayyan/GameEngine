@@ -37,9 +37,5 @@ uniform sampler2D u_Textures[32];
 
 void main()
 {
-	 if (v_TexIndex == 0.0) {
-        color = v_Color; // Use the solid color directly
-    } else {
-        color = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor) * v_Color;
-    }
+     color = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor) * v_Color;
 }

@@ -29,8 +29,10 @@ namespace Hazel
 		OthographicCamera& GetCamera() { return m_Camera; }
 		const OthographicCamera& GetCamera() const { return m_Camera; }
 
-		void SetZoomLevel(float level) { m_ZoomLevel = level; }
 		float GetZoomLevel(float level) { return m_ZoomLevel; }
+		void SetZoomLevel(float level) { m_ZoomLevel = level; }
+
+		const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
 		
 	private:
 		bool OnMouseScrolled(MouseScrolledEvent& e);
@@ -41,8 +43,8 @@ namespace Hazel
 		float m_ZoomLevel = 1.0f;
 		float m_AspectRatio;
 
-		OthographicCamera m_Camera;
 		OrthographicCameraBounds m_Bounds;
+		OthographicCamera m_Camera;
 
 		glm::vec3 m_CameraPosition = {0.0f, 0.0f, 0.0f};
 		

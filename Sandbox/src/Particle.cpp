@@ -1,5 +1,6 @@
 #include "Particle.h"
 
+#include <glm/gtc/constants.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/compatibility.hpp>
 
@@ -22,12 +23,27 @@ private:
 	static std::uniform_int_distribution<std::mt19937::result_type> s_Distribution;
 };
 
+
+
+
+
+
+
+
 std::mt19937 Random::s_RandomEngine;
 std::uniform_int_distribution<std::mt19937::result_type> Random::s_Distribution;
 
-ParticleSystem::ParticleSystem()
+
+
+
+
+
+
+
+ParticleSystem::ParticleSystem(uint32_t maxParticls)
+	: m_PoolIndex(maxParticls - 1)
 {
-	m_ParticlePool.resize(1000);
+	m_ParticlePool.resize(maxParticls);
 }
 
 void ParticleSystem::Emit(const ParticleProps& particleProps)
@@ -86,11 +102,12 @@ void ParticleSystem::OnRender(Hazel::OthographicCamera& camera)
 
 		float life = particle.LifeRemaining / particle.LifeTime;
 		glm::vec4 color = glm::lerp(particle.ColorEnd, particle.ColorBegin, life);
-		color.a = color.a * life;
+		//color.a = color.a * life;
 
 		float size = glm::lerp(particle.SizeEnd, particle.SizeBegin, life);
-		Hazel::Renderer2D::DrawRotatedQuad(particle.Position, { size, size }, particle.Rotation, color);
-
-
+		glm::vec3 position = { particle.Position.x, particle.Position.y , 0.2f };
+		Hazel::Renderer2D::DrawRotatedQuad(position, { size, size }, particle.Rotation, color);
 	}
+	Hazel::Renderer2D::EndScene();
+
 }
