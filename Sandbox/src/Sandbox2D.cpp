@@ -18,12 +18,12 @@ void Sandbox2D::OnAttach()
 	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/Texture/Checkerboard.png");
 
 	// Smoke
-	m_SmokeParticle.Position = { 0.0f, 0.0f };
-	m_SmokeParticle.Velocity = { -2.0f, 0.0f }, m_SmokeParticle.VelocityVariation = { 4.0f, 2.0f };
-	m_SmokeParticle.SizeBegin = 0.35f, m_SmokeParticle.SizeEnd = 0.0f, m_SmokeParticle.SizeVariation = 0.15f;
-	m_SmokeParticle.ColorBegin = { 0.8f, 0.8f, 0.8f, 1.0f };
-	m_SmokeParticle.ColorEnd = { 0.6f, 0.6f, 0.6f, 1.0f };
-	m_SmokeParticle.LifeTime = 4.0f;
+	m_Particle.Position = { 0.0f, 0.0f };
+	m_Particle.Velocity = { -2.0f, 0.0f }, m_Particle.VelocityVariation = { 4.0f, 2.0f };
+	m_Particle.SizeBegin = 0.35f, m_Particle.SizeEnd = 0.0f, m_Particle.SizeVariation = 0.15f;
+	m_Particle.ColorBegin = { 0.8f, 0.8f, 0.8f, 1.0f };
+	m_Particle.ColorEnd = { 0.6f, 0.6f, 0.6f, 1.0f };
+	m_Particle.LifeTime = 4.0f;
 
 
 }

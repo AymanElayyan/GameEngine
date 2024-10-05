@@ -40,6 +40,7 @@ namespace Hazel
 		float m_AspecRatio;
 		float m_ZoomLevel = 1.0f;
 		OthographicCamera m_Camera;
+		OrthographicCameraBounds m_Bounds;
 
 		bool m_Rotation;
 
