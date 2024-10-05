@@ -39,12 +39,15 @@ namespace Hazel
 	private:
 		float m_AspecRatio;
 		float m_ZoomLevel = 1.0f;
+		float m_AspectRatio;
+
 		OthographicCamera m_Camera;
 		OrthographicCameraBounds m_Bounds;
 
+		glm::vec3 m_CameraPosition = {0.0f, 0.0f, 0.0f};
+		
 		bool m_Rotation;
 
-		glm::vec3 m_CameraPosition = {0.0f, 0.0f, 0.0f};
 		float m_CameraRotation = 0.0f;
 		float m_CameraTranslationSpeed = 7.0f, m_CameraRotationSpeed = 180.0f;
 

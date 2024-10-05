@@ -59,6 +59,7 @@ namespace Hazel
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = (m_ZoomLevel) > (0.25f) ? (m_ZoomLevel) : (0.25f);
 		m_Camera.SetProjection(-m_AspecRatio * m_ZoomLevel, m_AspecRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
 		return false;
 	}
 
