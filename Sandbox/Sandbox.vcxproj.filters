@@ -9,4 +9,7 @@
     <ClInclude Include="src\Sandbox2D.h" />
     <ClInclude Include="src\Particle.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\game\textures\RPGpack_sheet_2X.png" />
+  </ItemGroup>
 </Project>
