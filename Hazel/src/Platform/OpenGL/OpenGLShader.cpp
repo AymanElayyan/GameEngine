@@ -27,13 +27,13 @@ namespace Hazel {
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
 
-		// Extract name from filpath
+		// Extract name from filepath
 		auto lastSlash = filepath.find_last_of("/\\");
 		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
 		auto lastDot = filepath.rfind('.');
 		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
 		m_Name = filepath.substr(lastSlash, count);
-		
+
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
@@ -77,7 +77,7 @@ namespace Hazel {
 
 	void OpenGLShader::SetIntArray(const std::string& name, int* value, uint32_t count)
 	{
-		UploadUniformIntArray(name, value, count);		
+		UploadUniformIntArray(name, value, count);
 	}
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value)
@@ -172,10 +172,18 @@ namespace Hazel {
 		if (in)
 		{
 			in.seekg(0, std::ios::end);
-			result.resize(in.tellg());
-			in.seekg(0, std::ios::beg);
-			in.read(&result[0], result.size());
-			in.close();
+			size_t size = in.tellg();
+			if (size != -1)
+			{
+				result.resize(size);
+				in.seekg(0, std::ios::beg);
+				in.read(&result[0], size);
+				in.close();
+			}
+			else
+			{
+				HZ_CORE_ERROR("Could not read from file '{0}'", filepath);
+			}
 		}
 		else
 		{
@@ -193,20 +201,22 @@ namespace Hazel {
 
 		const char* typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
-		size_t pos = source.find(typeToken, 0);
-
-		while (pos != std::string::npos) {
-			size_t eol = source.find_first_of("\r\n", pos);
+		size_t pos = source.find(typeToken, 0); //Start of shader type declaration line
+		while (pos != std::string::npos)
+		{
+			size_t eol = source.find_first_of("\r\n", pos); //End of shader type declaration line
 			HZ_CORE_ASSERT(eol != std::string::npos, "Syntax error");
-
-			size_t begin = pos + typeTokenLength + 1;
+			size_t begin = pos + typeTokenLength + 1; //Start of shader type name (after "#type " keyword)
 			std::string type = source.substr(begin, eol - begin);
-			HZ_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specifier!");
+			HZ_CORE_ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
 
-			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
-			pos = source.find(typeToken, nextLinePos);
-			shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+			size_t nextLinePos = source.find_first_not_of("\r\n", eol); //Start of shader code after shader type declaration line
+			HZ_CORE_ASSERT(nextLinePos != std::string::npos, "Syntax error");
+			pos = source.find(typeToken, nextLinePos); //Start of next shader type declaration line
+
+			shaderSources[ShaderTypeFromString(type)] = (pos == std::string::npos) ? source.substr(nextLinePos) : source.substr(nextLinePos, pos - nextLinePos);
 		}
+
 		return shaderSources;
 	}
 
@@ -215,10 +225,9 @@ namespace Hazel {
 		HZ_PROFILE_FUNCTION();
 
 		GLuint program = glCreateProgram();
-		HZ_CORE_ASSERT(shaderSources.size() <= 2, "Only support 2 shader!");
+		HZ_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
 		std::array<GLenum, 2> glShaderIDs;
 		int glShaderIDIndex = 0;
-
 		for (auto& kv : shaderSources)
 		{
 			GLenum type = kv.first;
@@ -226,24 +235,21 @@ namespace Hazel {
 
 			GLuint shader = glCreateShader(type);
 
-
-			GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
 			const GLchar* sourceCStr = source.c_str();
 			glShaderSource(shader, 1, &sourceCStr, 0);
 
 			glCompileShader(shader);
+
 			GLint isCompiled = 0;
 			glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
-
 			if (isCompiled == GL_FALSE)
 			{
 				GLint maxLength = 0;
 				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
 
 				std::vector<GLchar> infoLog(maxLength);
-
 				glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
+
 				glDeleteShader(shader);
 
 				HZ_CORE_ERROR("{0}", infoLog.data());
@@ -253,32 +259,40 @@ namespace Hazel {
 
 			glAttachShader(program, shader);
 			glShaderIDs[glShaderIDIndex++] = shader;
-
 		}
 
+		m_RendererID = program;
+
+		// Link our program
 		glLinkProgram(program);
+
+		// Note the different functions here: glGetProgram* instead of glGetShader*.
 		GLint isLinked = 0;
 		glGetProgramiv(program, GL_LINK_STATUS, (int*)&isLinked);
-
 		if (isLinked == GL_FALSE)
 		{
 			GLint maxLength = 0;
 			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
+
+			// The maxLength includes the NULL character
 			std::vector<GLchar> infoLog(maxLength);
 			glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
+
+			// We don't need the program anymore.
 			glDeleteProgram(program);
 
-			for (auto id : glShaderIDs) {
+			for (auto id : glShaderIDs)
 				glDeleteShader(id);
 
-				HZ_CORE_ERROR("{0}", infoLog.data());
-				HZ_CORE_ASSERT(false, "Shader link failure!");
-				return;
-			}
-			for (auto id : glShaderIDs)
-				glDetachShader(program, id);
-
+			HZ_CORE_ERROR("{0}", infoLog.data());
+			HZ_CORE_ASSERT(false, "Shader link failure!");
+			return;
 		}
-		m_RendererID = program;
+
+		for (auto id : glShaderIDs)
+		{
+			glDetachShader(program, id);
+			glDeleteShader(id);
+		}
 	}
 }
