@@ -14,6 +14,7 @@ namespace Hazel
 
 		static void BeginScene(const OthographicCamera& camera);
 		static void EndScene();
+
 		static void Flush();
 
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
@@ -37,6 +38,7 @@ namespace Hazel
 
 		static Statistics GetStats();
 		static void ResetStats();
+
 	private:
 		static void StartNewBatch();
 
