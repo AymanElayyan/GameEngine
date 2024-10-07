@@ -21,6 +21,7 @@
 #include "Hazel/Renderer/Renderer.h"
 #include "Hazel/Renderer/Shader.h"
 #include "Hazel/Renderer/Texture.h"
+#include "Hazel/Renderer/SubTexture2D.h"
 #include "Hazel/Renderer/VertexArray.h"
 #include "Hazel/Renderer/OthographicCamera.h"
 #include "Hazel/Renderer/OthographicCameraController.h"
