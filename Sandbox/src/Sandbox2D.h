@@ -26,6 +26,7 @@ private:
 	Hazel::Ref <Hazel::Shader> m_FlatColorShader;
 	Hazel::Ref <Hazel::Texture2D> m_CheckerboardTexture;
 	Hazel::Ref <Hazel::Texture2D> m_SpriteSheet;
+	Hazel::Ref <Hazel::SubTexture2D> m_TextureStaires;
 
 	ParticleSystem m_ParticleSystem;
 	ParticleProps m_Particle;
