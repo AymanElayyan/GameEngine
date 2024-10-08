@@ -84,12 +84,12 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 			m_ParticleSystem.Emit(m_Particle);
 	}
 
-	m_ParticleSystem.OnUpdate(ts);
-	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
-
 	Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
 	Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_SpriteSheet);
 	Hazel::Renderer2D::EndScene();
+
+	m_ParticleSystem.OnUpdate(ts);
+	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
 }
 
 
