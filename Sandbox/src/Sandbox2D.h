@@ -26,7 +26,7 @@ private:
 	Hazel::Ref <Hazel::Texture2D> m_SpriteSheet;
 	Hazel::Ref <Hazel::SubTexture2D> m_TextureStairs;
 	Hazel::Ref <Hazel::SubTexture2D> m_TextureBarrel;
-	Hazel::Ref <Hazel::Texture2D> m_TextureTree;
+	Hazel::Ref <Hazel::SubTexture2D> m_TextureTree;
 	
 	ParticleSystem m_ParticleSystem;
 	ParticleProps m_Particle;
