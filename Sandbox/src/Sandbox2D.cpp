@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 static const uint32_t s_MapWidth = 24;
-static const char* s_MapTiles = 
+static const char* s_MapTiles =
 "DWWWWWWWWWWWWWWWWWWWWWWD"
 "DWWWWWWWWWWWWWWWWWWWWWWD"
 "DDWWWWWWWWWWWWWWWWWWWWDD"
@@ -42,7 +42,7 @@ void Sandbox2D::OnAttach()
 	m_MapWidth = s_MapWidth;
 	m_MapHeight = strlen(s_MapTiles) / s_MapWidth;
 
-	s_TextureMap['D'] = Hazel::SubTexture2D::CreateFromCoord(m_SpriteSheet, {6, 11}, {128, 128});
+	s_TextureMap['D'] = Hazel::SubTexture2D::CreateFromCoord(m_SpriteSheet, { 6, 11 }, { 128, 128 });
 	s_TextureMap['W'] = Hazel::SubTexture2D::CreateFromCoord(m_SpriteSheet, { 11, 11 }, { 128, 128 });
 
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
@@ -105,7 +105,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 #if 1
 	if (Hazel::Input::IsMouseButtonPressed(HZ_MOUSE_BUTTON_LEFT))
 	{
-		HZ_WARN("Hazel::Input::IsMouseButtonPressed");
+		//HZ_WARN("Hazel::Input::IsMouseButtonPressed");
 		auto [x, y] = Hazel::Input::GetMousePosition();
 		auto width = Hazel::Application::Get().GetWindow().GetWidth();
 		auto height = Hazel::Application::Get().GetWindow().GetHeight();
@@ -139,8 +139,8 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 
 		}
 	}
-	
-	
+
+
 	/*Hazel::Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_TextureStairs);
 	Hazel::Renderer2D::DrawQuad({ 1.0f, 0.0f, 1.0f }, { 1.0f, 1.0f }, m_TextureBarrel);
 	Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, 1.0f }, { 1.0f, 2.0f }, m_TextureTree);*/
@@ -153,8 +153,72 @@ void Sandbox2D::OnImGuiRender()
 {
 	HZ_PROFILE_FUNCTION();
 
-	ImGui::Begin("Settings");
+	// Display ImGui demo window to test docking functionality
+	static bool show = true;
+	ImGui::ShowDemoWindow(&show);
 
+	// Settings for dockspace
+	bool DockSpaceOpen = true;
+	static bool opt_fullscreen = true;
+	static bool opt_padding = true;
+	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+
+	// Window flags configuration
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
+
+	if (opt_fullscreen)
+	{
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(viewport->WorkPos);
+		ImGui::SetNextWindowSize(viewport->WorkSize);
+		ImGui::SetNextWindowViewport(viewport->ID);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+	}
+
+	// Optional flag for background transparency
+	if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+		window_flags |= ImGuiWindowFlags_NoBackground;
+
+	// Remove padding based on the option
+	if (!opt_padding)
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+	// Begin ImGui window
+	ImGui::Begin("DockSpace Demo", &DockSpaceOpen, window_flags);
+
+	// Pop padding style if applied
+	if (!opt_padding)
+		ImGui::PopStyleVar();
+
+	if (opt_fullscreen)
+		ImGui::PopStyleVar(2);
+
+	// Docking configuration
+	ImGuiIO& io = ImGui::GetIO();
+	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+	{
+		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+		ImVec2 dockspace_size = ImGui::GetContentRegionAvail(); // Ensure the dockspace takes all available space
+		ImGui::DockSpace(dockspace_id, dockspace_size, dockspace_flags);
+	}
+
+	// Menu bar and options
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("Options"))
+		{
+			if (ImGui::MenuItem("Exit"))
+				Hazel::Application::Get().Close();
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}
+
+	// Example settings window
+	ImGui::Begin("Settings");
 	auto stats = Hazel::Renderer2D::GetStats();
 	ImGui::Text("Renderer2D Stats:");
 	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
@@ -163,10 +227,10 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
-	ImGui::End();
+		ImGui::End();
 
-	static bool show = true;
-	ImGui::ShowDemoWindow(&show);
+	// End the dockspace window
+	ImGui::End();
 }
 
 void Sandbox2D::OnEvent(Hazel::Event& e)
