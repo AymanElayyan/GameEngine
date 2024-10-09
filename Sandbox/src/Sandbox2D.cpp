@@ -217,9 +217,10 @@ void Sandbox2D::OnImGuiRender()
 	HZ_PROFILE_FUNCTION();
 
 	bool show = true;
+	bool dockingEnable = true;
+
 	ImGui::ShowDemoWindow(&show);
-	
-	ShowExampleAppDockSpace(&show);
+	ShowExampleAppDockSpace(&dockingEnable);
 	
 }
 
