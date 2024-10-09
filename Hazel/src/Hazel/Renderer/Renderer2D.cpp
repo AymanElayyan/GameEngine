@@ -43,7 +43,7 @@ namespace Hazel
 		Renderer2D::Statistics Stats;
 	};
 
-	static Renderer2DStorge s_Data;
+	Renderer2DStorge s_Data;
 
 	void Renderer2D::Init()
 	{

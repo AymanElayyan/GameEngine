@@ -9,7 +9,7 @@ layout(location = 4) in float a_TilingFactor;
 
 uniform mat4 u_ViewProjection;
 
-flat out vec4 v_Color;
+out vec4 v_Color;
 out vec2 v_TexCoord;
 out float v_TexIndex;
 out float v_TilingFactor;
@@ -28,7 +28,7 @@ void main()
 
 layout(location = 0) out vec4 color;
 
-flat in vec4 v_Color;
+in vec4 v_Color;
 in vec2 v_TexCoord;
 in float v_TexIndex;
 in float v_TilingFactor;
@@ -37,6 +37,6 @@ uniform sampler2D u_Textures[32];
 
 void main()
 {
-	color = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor) * vec4(1.0, 0.4, 0.5, 1.0);
+	color = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor) * v_Color;
 
 }

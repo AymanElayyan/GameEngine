@@ -45,7 +45,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 
 	Hazel::RenderCommand::Clear();
 
-#if 0
+#if 1
 	static float rotation = 0.0f;
 	rotation += ts * 50.0f;
 
@@ -67,7 +67,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 		}
 	}
 #endif
-
+#if 0
 	if (Hazel::Input::IsMouseButtonPressed(HZ_MOUSE_BUTTON_LEFT))
 	{
 		//HZ_WARN("Hazel::Input::IsMouseButtonPressed");
@@ -90,6 +90,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 
 	m_ParticleSystem.OnUpdate(ts);
 	m_ParticleSystem.OnRender(m_CameraController.GetCamera());
+#endif
 }
 
 

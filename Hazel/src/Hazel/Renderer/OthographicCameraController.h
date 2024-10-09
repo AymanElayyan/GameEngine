@@ -39,9 +39,8 @@ namespace Hazel
 		bool OnWindowResized(WindowResizeEvent& e);
 
 	private:
-		float m_AspecRatio;
-		float m_ZoomLevel = 1.0f;
 		float m_AspectRatio;
+		float m_ZoomLevel = 1.0f;
 
 		OrthographicCameraBounds m_Bounds;
 		OthographicCamera m_Camera;
