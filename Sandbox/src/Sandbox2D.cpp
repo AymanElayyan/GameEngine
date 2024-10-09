@@ -227,7 +227,9 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
-		ImGui::End();
+	uint32_t textureID = m_CheckerboardTexture->GetRendererID();
+	ImGui::Image((void*)textureID, ImVec2{ 64.0f, 64.0f });
+	ImGui::End();
 
 	// End the dockspace window
 	ImGui::End();
