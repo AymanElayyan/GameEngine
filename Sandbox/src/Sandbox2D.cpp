@@ -23,7 +23,6 @@ static const char* s_MapTiles =
 
 
 
-
 Sandbox2D::Sandbox2D()
 	: Layer("Sandbox2D"), m_CameraController(1280.0f / 720.0f, true), m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
 {
@@ -46,8 +45,6 @@ void Sandbox2D::OnAttach()
 	s_TextureMap['D'] = Hazel::SubTexture2D::CreateFromCoord(m_SpriteSheet, {6, 11}, {128, 128});
 	s_TextureMap['W'] = Hazel::SubTexture2D::CreateFromCoord(m_SpriteSheet, { 11, 11 }, { 128, 128 });
 
-
-
 	m_Particle.ColorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	m_Particle.ColorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
 	m_Particle.SizeBegin = 0.5f, m_Particle.SizeVariation = 0.3f, m_Particle.SizeEnd = 0.0f;
@@ -55,6 +52,8 @@ void Sandbox2D::OnAttach()
 	m_Particle.Velocity = { 0.0f, 0.0f };
 	m_Particle.VelocityVariation = { 3.0f, 1.0f };
 	m_Particle.Position = { 0.0f, 0.0f };
+
+	m_CameraController.SetZoomLevel(7.0f);
 }
 
 void Sandbox2D::OnDetach()
