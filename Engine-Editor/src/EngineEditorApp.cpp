@@ -1,24 +1,26 @@
 #include <Hazel.h>
 #include <Hazel/Core/EntryPoint.h>
 
-#include "Sandbox2D.h"
-#include "ExampleLayer.h"
+#include "EditorLayer.h"
 
-class Sandbox : public Hazel::Application
+namespace Hazel
 {
-public:
-	Sandbox()
+	class EngineEditor : public Application
 	{
-		// PushLayer(new ExampleLayer());
-		PushLayer(new Sandbox2D());
-	}
+	public:
+		EngineEditor()
+			:Application("Engine Editor")
+		{
+			PushLayer(new EditorLayer());
+		}
 
-	~Sandbox()
+		~EngineEditor()
+		{
+		}
+	};
+
+	Application* CreateApplication()
 	{
+		return new EngineEditor();
 	}
-};
-
-Hazel::Application* Hazel::CreateApplication()
-{
-	return new Sandbox();
 }
