@@ -35,6 +35,11 @@ void Sandbox2D::OnAttach()
 	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_SpriteSheet = Hazel::Texture2D::Create("assets/game/texture/RPGpack_sheet_2X.png");
 
+	Hazel::FramebufferSpecification spec;
+	spec.Width = 2000;
+	spec.Height = 1000;
+	m_Framebuffer = Hazel::Framebuffer::Create(spec);
+
 	m_TextureStairs = Hazel::SubTexture2D::CreateFromCoord(m_SpriteSheet, { 7, 6 }, { 128, 128 });
 	m_TextureBarrel = Hazel::SubTexture2D::CreateFromCoord(m_SpriteSheet, { 8, 2 }, { 128, 128 });
 	m_TextureTree = Hazel::SubTexture2D::CreateFromCoord(m_SpriteSheet, { 2, 1 }, { 128, 128 }, { 1,2 });
@@ -72,6 +77,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 	Hazel::Renderer2D::ResetStats();
 	{
 		HZ_PROFILE_SCOPE("Renderer Prep");
+		m_Framebuffer->Bind();
 		Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Hazel::RenderCommand::Clear();
 	}
@@ -140,13 +146,9 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 		}
 	}
 
-
-	/*Hazel::Renderer2D::DrawQuad({ -1.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, m_TextureStairs);
-	Hazel::Renderer2D::DrawQuad({ 1.0f, 0.0f, 1.0f }, { 1.0f, 1.0f }, m_TextureBarrel);
-	Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, 1.0f }, { 1.0f, 2.0f }, m_TextureTree);*/
 	Hazel::Renderer2D::EndScene();
 
-
+	m_Framebuffer->Unbind();
 	}
 }
 
@@ -155,8 +157,7 @@ void ShowExampleAppDockSpace(bool* p_open)
 	static bool opt_fullscreen = true;
 	static bool opt_padding = false;
 	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
-	// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-	// because it would be confusing to have two docking targets within each others.
+	
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 	if (opt_fullscreen)
 	{
@@ -182,7 +183,7 @@ void ShowExampleAppDockSpace(bool* p_open)
 		ImGui::PopStyleVar();
 	if (opt_fullscreen)
 		ImGui::PopStyleVar(2);
-	// Submit the DockSpace
+
 	ImGuiIO& io = ImGui::GetIO();
 	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 	{
@@ -193,8 +194,7 @@ void ShowExampleAppDockSpace(bool* p_open)
 	{
 		if (ImGui::BeginMenu("Options"))
 		{
-			// Disabling fullscreen would allow the window to be moved to the front of other windows,
-			// which we can't undo at the moment without finer window depth/z control.
+			
 			ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
 			ImGui::MenuItem("Padding", NULL, &opt_padding);
 			ImGui::Separator();
@@ -206,10 +206,11 @@ void ShowExampleAppDockSpace(bool* p_open)
 				*p_open = false;
 			ImGui::EndMenu();
 		}
-		
+
 		ImGui::EndMenuBar();
 	}
-	ImGui::End();
+	
+
 }
 
 void Sandbox2D::OnImGuiRender()
@@ -221,7 +222,19 @@ void Sandbox2D::OnImGuiRender()
 
 	ImGui::ShowDemoWindow(&show);
 	ShowExampleAppDockSpace(&dockingEnable);
-	
+	ImGui::Begin("Settings");
+	auto stats = Hazel::Renderer2D::GetStats();
+	ImGui::Text("Renderer2D Stats:");
+	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+	ImGui::Text("Quads: %d", stats.QuadCount);
+	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+	uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+	ImGui::Image((void*)textureID, ImVec2{ 1280, 720 });
+	ImGui::End();
+
+	ImGui::End();
 }
 
 void Sandbox2D::OnEvent(Hazel::Event& e)
