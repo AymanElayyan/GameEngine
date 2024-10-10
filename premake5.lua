@@ -1,6 +1,7 @@
 workspace "Hazel"
 	architecture "x86_64"
 	startproject "Sandbox"
+	toolset "v143"
 
 	configurations
 	{
