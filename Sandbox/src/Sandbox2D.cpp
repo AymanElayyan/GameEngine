@@ -33,6 +33,8 @@ void Sandbox2D::OnAttach()
 	HZ_PROFILE_FUNCTION();
 
 	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
+#if 1
+
 	m_SpriteSheet = Hazel::Texture2D::Create("assets/game/texture/RPGpack_sheet_2X.png");
 
 	Hazel::FramebufferSpecification spec;
@@ -59,6 +61,8 @@ void Sandbox2D::OnAttach()
 	m_Particle.Position = { 0.0f, 0.0f };
 
 	m_CameraController.SetZoomLevel(7.0f);
+#endif
+
 }
 
 void Sandbox2D::OnDetach()
@@ -77,7 +81,6 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 	Hazel::Renderer2D::ResetStats();
 	{
 		HZ_PROFILE_SCOPE("Renderer Prep");
-		m_Framebuffer->Bind();
 		Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Hazel::RenderCommand::Clear();
 	}
@@ -108,7 +111,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 	}
 #endif
 
-#if 1
+#if 0
 	if (Hazel::Input::IsMouseButtonPressed(HZ_MOUSE_BUTTON_LEFT))
 	{
 		//HZ_WARN("Hazel::Input::IsMouseButtonPressed");
@@ -138,17 +141,12 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 			Hazel::Ref<Hazel::SubTexture2D> texture;
 			if (s_TextureMap.find(tileType) != s_TextureMap.end())
 				texture = s_TextureMap[tileType];
-			else
-				texture = m_TextureBarrel;
 
 			Hazel::Renderer2D::DrawQuad({ x - m_MapWidth / 2.0f, y - m_MapHeight / 2.0f, 0.5f }, { 1.0f, 1.0f }, texture);
 
 		}
 	}
-
 	Hazel::Renderer2D::EndScene();
-
-	m_Framebuffer->Unbind();
 	}
 }
 
@@ -157,7 +155,7 @@ void ShowExampleAppDockSpace(bool* p_open)
 	static bool opt_fullscreen = true;
 	static bool opt_padding = false;
 	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
-	
+
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 	if (opt_fullscreen)
 	{
@@ -194,7 +192,7 @@ void ShowExampleAppDockSpace(bool* p_open)
 	{
 		if (ImGui::BeginMenu("Options"))
 		{
-			
+
 			ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
 			ImGui::MenuItem("Padding", NULL, &opt_padding);
 			ImGui::Separator();
@@ -209,9 +207,8 @@ void ShowExampleAppDockSpace(bool* p_open)
 
 		ImGui::EndMenuBar();
 	}
-	
-
 }
+
 
 void Sandbox2D::OnImGuiRender()
 {
@@ -222,6 +219,7 @@ void Sandbox2D::OnImGuiRender()
 
 	ImGui::ShowDemoWindow(&show);
 	ShowExampleAppDockSpace(&dockingEnable);
+
 	ImGui::Begin("Settings");
 	auto stats = Hazel::Renderer2D::GetStats();
 	ImGui::Text("Renderer2D Stats:");
@@ -230,8 +228,6 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
-	uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-	ImGui::Image((void*)textureID, ImVec2{ 1280, 720 });
 	ImGui::End();
 
 	ImGui::End();

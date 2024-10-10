@@ -205,15 +205,13 @@ void ShowExampleAppDockSpace(bool* p_open)
 			if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
 			if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, opt_fullscreen)) { dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
 			ImGui::Separator();
-			if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
+			if (ImGui::MenuItem("Exit")) Hazel::Application::Get().Close();
 				*p_open = false;
 			ImGui::EndMenu();
 		}
 
 		ImGui::EndMenuBar();
 	}
-
-
 }
 
 void EditorLayer::OnImGuiRender()
@@ -232,9 +230,11 @@ void EditorLayer::OnImGuiRender()
 	ImGui::Text("Quads: %d", stats.QuadCount);
 	ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 	ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
-	uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-	ImGui::Image((void*)textureID, ImVec2{ 1280, 720 });
+	uint32_t textureID = m_CheckerboardTexture->GetRendererID();
+	
+	ImGui::Image((void*)textureID, ImVec2{ 1280, 720 }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
 	ImGui::End();
 
 	ImGui::End();
