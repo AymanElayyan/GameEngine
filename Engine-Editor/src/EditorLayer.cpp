@@ -46,7 +46,7 @@ namespace Hazel {
 
 		{
 			static float rotation = 0.0f;
-			rotation += ts * 50.0f;
+			rotation += ts * 5.0f;
 
 			HZ_PROFILE_SCOPE("Renderer Draw");
 			Hazel::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -148,13 +148,18 @@ namespace Hazel {
 
 		ImGui::End();
 
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+		//ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Viewport");
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
+		{
+			m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
+			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+		}
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ 0,0 }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 		ImGui::End();
-		ImGui::PopStyleVar();
+		//ImGui::PopStyleVar();
 
 		ImGui::End();
 	}
