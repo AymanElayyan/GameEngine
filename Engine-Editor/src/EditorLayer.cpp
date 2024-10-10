@@ -74,7 +74,6 @@ namespace Hazel {
 	void EditorLayer::OnImGuiRender()
 	{
 		HZ_PROFILE_FUNCTION();
-
 		static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;
 		bool opt_fullscreen = opt_fullscreen_persistant;
@@ -142,6 +141,7 @@ namespace Hazel {
 		{
 			m_Framebuffer->Resize((uint32_t)viewportPanelSize.x, (uint32_t)viewportPanelSize.y);
 			m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+			m_CameraController.OnResize(viewportPanelSize.x, viewportPanelSize.y);
 		}
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
@@ -149,6 +149,7 @@ namespace Hazel {
 		ImGui::PopStyleVar();
 
 		ImGui::End();
+
 	}
 
 	void EditorLayer::OnEvent(Hazel::Event& e)
