@@ -9,14 +9,19 @@ namespace Hazel
 
 	}
 	
-	static void OnTransformConstruct()
+	static void OnTransformConstruct(entt::registry& reqistry, entt::entity entity)
 	{
 
 	}
 
 	Scene::Scene()
 	{
-		struct MeshComponent {};
+		struct MeshComponent 
+		{
+			float c;
+			MeshComponent() = default;
+		};
+
 		struct TransformComponent
 		{
 			glm::mat4 Transform;
@@ -33,9 +38,9 @@ namespace Hazel
 		entt::entity entity = m_Registry.create();
 		m_Registry.emplace<TransformComponent>(entity, glm::mat4(1.0f));
 
-		//m_Registry.on_construct<TransformComponent>().connect<&OnTransformConstruct()>();
+		m_Registry.on_construct<TransformComponent>().connect<&OnTransformConstruct>();
 
-		if (m_Registry.any_of<TransformComponent>(entity))
+		if (m_Registry.all_of<TransformComponent>(entity))
 			TransformComponent& transform = m_Registry.get<TransformComponent>(entity);
 
 
@@ -50,8 +55,7 @@ namespace Hazel
 		for (auto entity : group)
 		{
 			
-		//	auto& [transform, mesh] = group.get<TransformComponent, MeshComponent>(entity);
-		//  Renderer::Submit(mesh, transform);
+			auto& [transform, mesh] = group.get<TransformComponent, MeshComponent>(entity);
 		}
 
 
