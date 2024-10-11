@@ -43,6 +43,7 @@ namespace Hazel {
 		};
 		static void ResetStats();
 		static Statistics GetStats();
+
 	private:
 		static void StartNewBatch();
 	};
